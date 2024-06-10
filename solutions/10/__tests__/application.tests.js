@@ -8,15 +8,15 @@ import userEvent from '@testing-library/user-event';
 import run from '../src/application.js';
 
 beforeEach(() => {
-  const initHtml = fs.readFileSync(path.join('solutions/10/__fixtures__', 'index.html')).toString();
+  const initHtml = fs.readFileSync(path.join(__dirname, '../__fixtures__/index.html')).toString();
   document.body.innerHTML = initHtml;
   run();
 });
 
 test('application 1', async () => {
   const sendButton = screen.getByRole('button', { name: 'Send' });
-  const emailField = screen.getByRole('textbox', { name: 'Email' });
-  const nameField = screen.getByRole('textbox', { name: 'Name' });
+  const emailField = screen.getByLabelText('Email');
+  const nameField = screen.getByLabelText('Name');
   await userEvent.type(emailField, 'a@b.c');
   await userEvent.type(nameField, 'Toto');
   await userEvent.click(sendButton);
@@ -32,9 +32,9 @@ test('application 1', async () => {
 
 test('application 2', async () => {
   const sendButton = screen.getByRole('button', { name: 'Send' });
-  const emailField = screen.getByRole('textbox', { name: 'Email' });
-  const nameField = screen.getByRole('textbox', { name: 'Name' });
-  const commentField = screen.getByRole('textbox', { name: 'Comment' });
+  const emailField = screen.getByLabelText('Email');
+  const nameField = screen.getByLabelText('Name');
+  const commentField = screen.getByLabelText('Comment');
   await userEvent.type(emailField, 'toto@hexlet.io');
   await userEvent.type(nameField, 'Toto Robbins');
   await userEvent.type(commentField, 'If you <i>can</i> do, you <b>must</b> do');
@@ -47,3 +47,4 @@ test('application 2', async () => {
   expect(commentText).toBeInTheDocument();
   expect(commentText.outerHTML).toEqual(`<div>Comment: ${escapeHtml('If you <i>can</i> do, you <b>must</b> do')}</div>`);
 });
+
